@@ -3,15 +3,19 @@ import { getPhotos } from "@/lib/data";
 import { Photo } from "@/lib/types";
 import PhotoMasonry from "@/app/_components/photoMasonry"
 
-export default async function Photos({searchParams,}: {
-    searchParams?: {
-        tags?: string[];
-    }
-}) {
+type PhotosProp = {
+  searchParams?: {
+    tags?: string[];
+  };
+};
 
-  const tags = searchParams?.tags || [];
+export default async function Page(props: PhotosProp | Promise<PhotosProp>) {
+  
+  const {searchParams} = await props;
 
+  const tags = searchParams?.tags ?? [];
   const photos = await getPhotos(tags);
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white">
