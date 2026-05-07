@@ -23,7 +23,7 @@ export default function PhotoMasonry({photos}: {photos: Photo[]}) {
                 </div>
             ))
         ) : (
-            <p className="text-gray-500">No photos found with the specified tags.</p>
+            <p className="col-span-full text-center text-gray-500">No photos found with the specified tags.</p>
         )}
     </div>
   )

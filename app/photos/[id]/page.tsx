@@ -1,9 +1,9 @@
 import { auth } from "@/auth";
 import { getPhotoById } from "@/lib/data";
 
-export default async function IndividualPhoto({params}: {params: {id: number}}) {
-    const user = auth();
-    const photo = await getPhotoById(params.id);
+export default async function IndividualPhoto({params}: {params: {id: string}}) {
+    const user = await auth();
+    const photo = await getPhotoById(Number(params.id));
 
     // If no photo exists, show an error message
     if (photo === undefined) {

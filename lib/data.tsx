@@ -1,5 +1,4 @@
 import { Photo } from "@/lib/types";
-import { thingToGetData } from "Placewhereitcomesfrom";
 
 export async function getPhotoById(id: number): Promise<Photo | undefined> {
     // This is a placeholder implementation. This would use thingToGetData to fetch the photo data from a database or API.
@@ -25,9 +24,8 @@ export async function getPhotoById(id: number): Promise<Photo | undefined> {
     return photos.find(photo => photo.id === id);
 }
 
-export async function getPhotos(tags: string[]): Promise<Photo[] | undefined> {
+export async function getPhotos(tags: string[] = []): Promise<Photo[]> {
     // This is a placeholder implementation. This would use thingToGetData to fetch the photo data from a database or API.
-    // would also filter photos based on the provided tags.
     const photos: Photo[] = [
         {
             id: 1,
@@ -43,16 +41,23 @@ export async function getPhotos(tags: string[]): Promise<Photo[] | undefined> {
             description: 'A serene beach with crystal clear water.',
             photographer: 'Jane Smith',
             dateTaken: '2023-07-10',
-            tags: ['beach', 'ocean', 'nature']
+            tags: ['beach', 'ocean', 'nature', 'animals']
         }
     ];
 
+    const activeTags = tags.filter(tag => tag.trim().length > 0);
+
     // Filter photos based on the provided tags
-    if (tags.length > 0) {
-        return photos.filter(photo => 
-            photo.tags.some(tag => tags.includes(tag))
+    if (activeTags.length > 0) {
+        return photos.filter(photo =>
+            activeTags.every(tag => photo.tags.includes(tag))
         );
     }
 
     return photos;
+}
+
+export function getPossibleTags(): string[] {
+    // This is a placeholder implementation. This would use thingToGetData to fetch the possible tags from a database or API.
+    return ['nature', 'city', 'people', 'animals', 'technology'];
 }
