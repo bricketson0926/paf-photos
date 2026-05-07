@@ -1,5 +1,7 @@
 import { auth } from "@/auth";
 import { getPhotoById } from "@/lib/data";
+import BackButton from "@/app/_components/backButton";
+
 
 export default async function IndividualPhoto({
     params
@@ -12,16 +14,22 @@ export default async function IndividualPhoto({
 
     // If no photo exists, show an error message
     if (photo === undefined) {
-        return <div className="bg-gray-100 p-4 rounded-lg">
-            <h1 className="text-xl font-bold">
-                Photo ID is missing.
-            </h1>
+        return <div className="min-h-screen p-4">
+            <BackButton />
+            <div className="bg-gray-100 p-4 rounded-lg">
+                <h1 className="text-xl font-bold">
+                    Photo ID is missing.
+                </h1>
+            </div>
         </div>
     }
     
     return (
     <div className="min-h-screen flex items-center justify-center">
-        <div className="flex gap-6 p-4">
+        <div className="flex flex-col ">
+            <BackButton />
+            <div className="max-w-4xl w-full p-6 bg-white rounded-lg shadow-lg">
+        <div className="flex gap-6">
             <div className="shrink-0">
                 <img
                     src={photo.url}
@@ -52,6 +60,8 @@ export default async function IndividualPhoto({
                     Description: {photo.description}
                 </p>
             </div>
+        </div>
+        </div>
         </div>
     </div>
     )

@@ -8,6 +8,7 @@ export default function TagBar() {
     const searchParams = useSearchParams() // get the search params
     const pathname = usePathname(); // get the pathname
     const {replace} = useRouter(); // get the router
+    const currentMode = searchParams.get('tagMode') ?? 'any';
 
     function handleSort(tag: string) {
         // this function handles the sort
@@ -59,23 +60,27 @@ export default function TagBar() {
                         </button>
                     );
                 })}
-                <div className="flex-1 flex-col items-center justify-center">
+                </div>
+                <div className="mt-4 flex w-full flex-row items-center justify-center gap-2">
                     <button
                         type="button"
                         onClick={() => handleFilterMode('any')}
-                        className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 transition-colors hover:bg-gray-100"
+                        className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${
+                            currentMode === 'any' ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
+                        }`}
                     >
                         Filter Any
                     </button>
                     <button
                         type="button"
                         onClick={() => handleFilterMode('all')}
-                        className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 transition-colors hover:bg-gray-100"
+                        className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${
+                            currentMode === 'all' ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
+                        }`}
                     >
                         Filter All
                     </button>
                 </div>
-            </div>
         </div>
     );
 }

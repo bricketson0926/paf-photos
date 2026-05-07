@@ -23,7 +23,7 @@ export default async function Photos({searchParams,}: {
   const photos = await getPhotos(tags, tagMode === 'any');
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center px-16 bg-white">
+      <main className="flex flex-1 w-full max-w-6xl flex-col items-center px-16 bg-white">
         <h1 className="font-semibold text-center contents-center text-2xl pt-32">
             Filter or Search Photos
         </h1>
