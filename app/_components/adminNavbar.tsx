@@ -15,12 +15,6 @@ export default function AdminNavbar() {
                     Add Photo
                 </Link>
                 <Link
-                    href="/admin/audio"
-                    className="rounded-xl bg-gray-200 px-3 py-1 text-sm font-medium transition hover:bg-gray-300"
-                >
-                    Add Audio Recording
-                </Link>
-                <Link
                     href="/admin/maps"
                     className="rounded-xl bg-gray-200 px-3 py-1 text-sm font-medium transition hover:bg-gray-300"
                 >

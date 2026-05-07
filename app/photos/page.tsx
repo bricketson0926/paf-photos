@@ -1,28 +1,35 @@
-import Searchbar from "@/app/_components/searchbar";
+import TagBar from "@/app/_components/tagBar";
 import { getPhotos } from "@/lib/data";
 import { Photo } from "@/lib/types";
 import PhotoMasonry from "@/app/_components/photoMasonry"
 
-type PhotosProp = {
-  searchParams?: {
-    tags?: string[];
-  };
-};
+export const dynamic = 'force-dynamic';
 
-export default async function Page(props: PhotosProp | Promise<PhotosProp>) {
-  
-  const {searchParams} = await props;
+export default async function Photos({searchParams,}: {
+    searchParams?: Promise<{
+        tags?: string | string[];
+        tagMode?: 'any' | 'all';
+    }>
+}) {
 
-  const tags = searchParams?.tags ?? [];
-  const photos = await getPhotos(tags);
+  const resolvedSearchParams = await searchParams;
+  const tags = Array.isArray(resolvedSearchParams?.tags)
+    ? resolvedSearchParams.tags
+    : resolvedSearchParams?.tags
+      ? [resolvedSearchParams.tags]
+      : [];
+  const tagMode = resolvedSearchParams?.tagMode || 'all';
 
+  const photos = await getPhotos(tags, tagMode === 'any');
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white">
-        <h1 className="font-semibold text-center contents-center text-2xl">
+      <main className="flex flex-1 w-full max-w-6xl flex-col items-center px-16 bg-white">
+        <h1 className="font-semibold text-center contents-center text-2xl pt-32">
             Filter or Search Photos
         </h1>
-        <Searchbar />
+
+        <TagBar />
+        
         <PhotoMasonry photos={photos as Photo[]} />
 
       </main>
