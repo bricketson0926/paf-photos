@@ -27,6 +27,14 @@ export default function TagBar() {
         replace(queryString ? `${pathname}?${queryString}` : pathname);
     }
 
+    function handleFilterMode(mode: 'any' | 'all') {
+        const params = new URLSearchParams(searchParams);
+        params.set('tagMode', mode);
+
+        const queryString = params.toString();
+        replace(queryString ? `${pathname}?${queryString}` : pathname);
+    }
+
     const possibleTags = getPossibleTags();
 
     return (
@@ -51,6 +59,22 @@ export default function TagBar() {
                         </button>
                     );
                 })}
+                <div className="flex-1 flex-col items-center justify-center">
+                    <button
+                        type="button"
+                        onClick={() => handleFilterMode('any')}
+                        className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 transition-colors hover:bg-gray-100"
+                    >
+                        Filter Any
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => handleFilterMode('all')}
+                        className="rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 transition-colors hover:bg-gray-100"
+                    >
+                        Filter All
+                    </button>
+                </div>
             </div>
         </div>
     );

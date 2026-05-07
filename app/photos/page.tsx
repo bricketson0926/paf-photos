@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 export default async function Photos({searchParams,}: {
     searchParams?: Promise<{
         tags?: string | string[];
+        tagMode?: 'any' | 'all';
     }>
 }) {
 
@@ -17,9 +18,9 @@ export default async function Photos({searchParams,}: {
     : resolvedSearchParams?.tags
       ? [resolvedSearchParams.tags]
       : [];
-  console.log("Received tags:", tags);
+  const tagMode = resolvedSearchParams?.tagMode || 'all';
 
-  const photos = await getPhotos(tags);
+  const photos = await getPhotos(tags, tagMode === 'any');
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center px-16 bg-white">
