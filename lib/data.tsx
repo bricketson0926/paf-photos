@@ -1,5 +1,5 @@
 'use cache';
-import { Photo } from "@/lib/types";
+import { Photo } from "@/types/index";
 
 const photos: Photo[] = [
     {

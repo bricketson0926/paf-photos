@@ -1,6 +1,5 @@
 'use client';
 
-import Image from "next/image";
 import {getAudioClipList} from "@/lib/getAudioClipList";
 import AudioList from "@/app/_components/AudioList";
 import { useEffect, useState, Suspense } from "react";
