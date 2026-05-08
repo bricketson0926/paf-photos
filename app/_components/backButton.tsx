@@ -1,10 +1,21 @@
 'use client';
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function BackButton() {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const handleBack = () => {
+        const photoId = searchParams.get('photoId');
+        
+        // If modal is open, close it instead of navigating back
+        if (photoId) {
+            const params = new URLSearchParams(searchParams);
+            params.delete('photoId');
+            router.push(params.toString() ? `?${params.toString()}` : '/photos');
+            return;
+        }
+
         // Try to restore saved filter state from sessionStorage
         const savedFilters = sessionStorage.getItem('photoFilters');
         

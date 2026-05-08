@@ -1,16 +1,20 @@
 'use client';
 
 import TagBar from "@/app/_components/tagBar";
-import { getPhotos } from "@/lib/data";
+import { getPhotos, getPhotoById } from "@/lib/data";
 import { Photo } from "@/lib/types";
 import PhotoMasonry from "@/app/_components/photoMasonry"
-import { useSearchParams } from "next/navigation";
+import PhotoModal from "@/app/_components/photoModal"
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 
 function PhotosContent() {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const [photos, setPhotos] = useState<Photo[]>([]);
+    const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [loading, setLoading] = useState(true);
+    const photoId = searchParams.get('photoId');
 
     useEffect(() => {
         // Save current filter state to sessionStorage for back navigation
@@ -36,6 +40,31 @@ function PhotosContent() {
         loadPhotos();
     }, [searchParams]);
 
+    useEffect(() => {
+        const loadSelectedPhoto = async () => {
+            if (photoId) {
+                const photo = await getPhotoById(Number(photoId));
+                setSelectedPhoto(photo || null);
+            } else {
+                setSelectedPhoto(null);
+            }
+        };
+
+        loadSelectedPhoto();
+    }, [photoId]);
+
+    const handlePhotoClick = (id: number) => {
+        const params = new URLSearchParams(searchParams);
+        params.set('photoId', id.toString());
+        router.push(`?${params.toString()}`);
+    };
+
+    const handleCloseModal = () => {
+        const params = new URLSearchParams(searchParams);
+        params.delete('photoId');
+        router.push(params.toString() ? `?${params.toString()}` : '/photos');
+    };
+
     if (loading) {
         return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
     }
@@ -43,7 +72,8 @@ function PhotosContent() {
     return (
         <>
             <TagBar />
-            <PhotoMasonry photos={photos as Photo[]} />
+            <PhotoMasonry photos={photos as Photo[]} onPhotoClick={handlePhotoClick} />
+            <PhotoModal photo={selectedPhoto} onClose={handleCloseModal} />
         </>
     );
 }
