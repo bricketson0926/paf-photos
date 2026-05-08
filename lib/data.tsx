@@ -1,5 +1,6 @@
 'use cache';
 import { Photo } from "@/types/index";
+import { thingToGetData } from "placeWhereItsFrom";
 
 const photos: Photo[] = [
     {
