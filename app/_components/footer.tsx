@@ -1,3 +1,5 @@
+'use client';
+
 export default function Footer() {
   return (
     <footer className="border-t border-gray-200 bg-white/95 backdrop-blur bottom-0 w-full fixed">

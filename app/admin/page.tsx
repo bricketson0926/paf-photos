@@ -1,6 +1,18 @@
-import { redirect } from "next/navigation"
+'use client';
+
+import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 export default function AdminPage() {
-    // Only redirects (forcefully) to the photos page for now. Could potentially add more admin features in the future...
-    redirect("/admin/photos", "replace");
+    const router = useRouter();
+    const redirectedRef = useRef(false);
+
+    useEffect(() => {
+        if (!redirectedRef.current) {
+            redirectedRef.current = true;
+            router.replace("/admin/photos");
+        }
+    }, [router]);
+
+    return null;
 }

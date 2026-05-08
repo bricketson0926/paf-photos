@@ -2,13 +2,9 @@
 
 import useMasonry from "@/app/_components/useMasonry";
 import { Photo } from "@/lib/types";
-import { redirect } from "next/navigation";
 
-export default function PhotoMasonry({photos}: {photos: Photo[]}) {
+export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], onPhotoClick: (id: number) => void}) {
   const masonryContainer = useMasonry();
-  function handlePhotoClick(id: number) {
-    redirect(`/photos/${id}`, 'push');
-  }
 
   return (
     <div
@@ -17,7 +13,7 @@ export default function PhotoMasonry({photos}: {photos: Photo[]}) {
     >          
         {photos && photos.length > 0 ? (
             photos.map((photo: Photo) => (
-                <div key={photo.id} className="bg-gray-100 p-4 rounded-lg" onClick={() => handlePhotoClick(photo.id)}>
+                <div key={photo.id} className="bg-gray-100 p-4 rounded-lg cursor-pointer hover:shadow-lg transition-shadow" onClick={() => onPhotoClick(photo.id)}>
                     <h2 className="text-md font-bold">{photo.description}</h2>
                     <img src={photo.url} alt={photo.description} className="w-full mt-4 rounded-lg" />
                 </div>
