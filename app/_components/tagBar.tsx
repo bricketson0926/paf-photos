@@ -2,6 +2,7 @@
 import { get } from "http";
 import {usePathname, useSearchParams, useRouter} from "next/navigation";
 import { getPossibleTags } from "@/lib/data";
+import { useState, useEffect } from "react";
 
 export default function TagBar() {
     // this component is used to search for a term
@@ -9,6 +10,15 @@ export default function TagBar() {
     const pathname = usePathname(); // get the pathname
     const {replace} = useRouter(); // get the router
     const currentMode = searchParams.get('tagMode') ?? 'any';
+    const [possibleTags, setPossibleTags] = useState<string[]>([]);
+
+    useEffect(() => {
+        const loadTags = async () => {
+            const tags = await getPossibleTags();
+            setPossibleTags(tags);
+        };
+        loadTags();
+    }, []);
 
     function handleSort(tag: string) {
         // this function handles the sort
@@ -35,8 +45,6 @@ export default function TagBar() {
         const queryString = params.toString();
         replace(queryString ? `${pathname}?${queryString}` : pathname);
     }
-
-    const possibleTags = getPossibleTags();
 
     return (
         // return the search bar

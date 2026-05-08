@@ -1,3 +1,4 @@
+'use cache';
 import { Photo } from "@/lib/types";
 
 const photos: Photo[] = [
@@ -44,7 +45,7 @@ export async function getPhotos(tags: string[] = [], anyTags: boolean = false): 
     return photos;
 }
 
-export function getPossibleTags(): string[] {
+export async function getPossibleTags(): Promise<string[]> {
     // This is a placeholder implementation. This would use thingToGetData to fetch the possible tags from a database or API.
     return ['nature', 'city', 'people', 'animals', 'technology'];
 }
