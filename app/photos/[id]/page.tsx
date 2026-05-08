@@ -1,7 +1,13 @@
 import { auth } from "@/auth";
-import { getPhotoById } from "@/lib/data";
+import { getPhotoById, getAllPhotos } from "@/lib/data";
 import BackButton from "@/app/_components/backButton";
 
+export async function generateStaticParams() {
+    const photos = await getAllPhotos();
+    return photos.map((photo) => ({
+        id: photo.id.toString(),
+    }));
+}
 
 export default async function IndividualPhoto({
     params

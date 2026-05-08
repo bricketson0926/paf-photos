@@ -27,6 +27,11 @@ export async function getPhotoById(id: number): Promise<Photo | undefined> {
     return photos.find(photo => photo.id === id);
 }
 
+export async function getAllPhotos(): Promise<Photo[]> {
+    // This is a placeholder implementation. This would use thingToGetData to fetch all photos from a database or API.
+    return photos;
+}
+
 export async function getPhotos(tags: string[] = [], anyTags: boolean = false): Promise<Photo[]> {
     // This is a placeholder implementation. This would use thingToGetData to fetch the photo data from a database or API.
 
