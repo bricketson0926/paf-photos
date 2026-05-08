@@ -19,7 +19,7 @@ function PhotosContent() {
     useEffect(() => {
         // Save current filter state to sessionStorage for back navigation
         const tags = searchParams.getAll('tags');
-        const tagMode = searchParams.get('tagMode') || 'all';
+        const tagMode = searchParams.get('tagMode') || 'any';
         
         sessionStorage.setItem('photoFilters', JSON.stringify({
             tags,
@@ -30,7 +30,7 @@ function PhotosContent() {
     useEffect(() => {
         const loadPhotos = async () => {
             const tags = searchParams.getAll('tags');
-            const tagMode = (searchParams.get('tagMode') || 'all') as 'any' | 'all';
+            const tagMode = (searchParams.get('tagMode') || 'any') as 'any' | 'all';
             
             const fetchedPhotos = await getPhotos(tags, tagMode === 'any');
             setPhotos(fetchedPhotos);
@@ -72,6 +72,9 @@ function PhotosContent() {
     return (
         <>
             <TagBar />
+            <p className="pb-2 text-gray-400">
+                {photos.length} photo{photos.length !== 1 && 's'} match{photos.length === 1 && 'es'} your criteria.
+            </p>
             <PhotoMasonry photos={photos as Photo[]} onPhotoClick={handlePhotoClick} />
             <PhotoModal photo={selectedPhoto} onClose={handleCloseModal} />
         </>
