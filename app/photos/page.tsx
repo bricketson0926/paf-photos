@@ -13,6 +13,17 @@ function PhotosContent() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Save current filter state to sessionStorage for back navigation
+        const tags = searchParams.getAll('tags');
+        const tagMode = searchParams.get('tagMode') || 'all';
+        
+        sessionStorage.setItem('photoFilters', JSON.stringify({
+            tags,
+            tagMode
+        }));
+    }, [searchParams]);
+
+    useEffect(() => {
         const loadPhotos = async () => {
             const tags = searchParams.getAll('tags');
             const tagMode = (searchParams.get('tagMode') || 'all') as 'any' | 'all';

@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { getPhotoById, getAllPhotos } from "@/lib/data";
 import BackButton from "@/app/_components/backButton";
 
@@ -14,7 +13,6 @@ export default async function IndividualPhoto({
 }: {
     params: Promise<{id: string}>
 }) {
-    const user = await auth();
     const id = Number((await params).id);
     const photo = await getPhotoById(id);
 
