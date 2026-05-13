@@ -16,10 +16,10 @@ export default function AudioList({clips}: {clips: AudioClip[] }) {
     return (
         <div>
             {clips.map((clip) => (
-                <div key={clip.key}>
+                <div key={clip.id}>
                     <h2>{clip.title}</h2>
                     <div>
-                        <audio controls src={process.env.CLOUDFRONT_URL + clip.title + '.m4a'}>
+                        <audio controls src={process.env.CLOUDFRONT_URL + clip.id + '.m4a'}>
                             Your browser does not support the audio element.
                         </audio>
                     </div>
