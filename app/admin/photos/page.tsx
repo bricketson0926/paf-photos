@@ -1,32 +1,60 @@
-import { auth } from "@/auth";
-import { Photo } from "@/lib/types";
 import { getPossibleTags } from "@/lib/data";
+import { sendToServer } from "@/lib/actions";
 
 export default async function AddPhoto() {
   const possibleTags = await getPossibleTags(); // Lint says await is unnecesary as of before implementing the full getPossibleTags function, but it will be necessary once that function is implemented. So I left it in.
   
   async function submitNewPhoto(formData:FormData) {
     'use server'
-    const session = await auth()
-    if (!session?.user) {
-      throw new Error('Unauthorized')
-    }
- 
+
     const rawFormData = {
       newPhoto: formData.get('newPhoto'),
+      title: formData.get('title'),
       description: formData.get('description'),
       photographer: formData.get('photographer'),
-      dateTaken: formData.get('dateTaken'),
       tags: formData.getAll('tags'),
     }
 
-    // mutate/parse/clean/generate data if needed
-    const processedData = {
-      ...rawFormData,
-      tagsList: rawFormData.tags.map((tag) => tag.toString().trim()).filter(Boolean),
+    // Send multipart form data so the file and fields arrive in the expected format.
+    // Of type multipart/form-data with file, title, tags, description, and ext fields.
+    const payload = new FormData();
+
+    if (rawFormData.newPhoto instanceof File && rawFormData.newPhoto.size > 0) {
+      payload.append('file', rawFormData.newPhoto);
     }
 
-    // send the data to the server or database
+    if (typeof rawFormData.title === 'string') {
+      payload.append('title', rawFormData.title.trim());
+    }
+
+    if (typeof rawFormData.description === 'string') {
+      const description = rawFormData.description
+        .trim()
+        .replace(/^b(["'])(.*)\1$/, '$2');
+      payload.append('description', description);
+    }
+
+    // if (typeof rawFormData.photographer === 'string') {
+    //   payload.append('photographer', rawFormData.photographer.trim());
+    // } Waiting for go ahead on whether to include photographer field or not.
+
+    if (rawFormData.newPhoto instanceof File && rawFormData.newPhoto.name.includes('.')) {
+      const ext = rawFormData.newPhoto.name.split('.').pop()?.trim();
+      if (ext) {
+        payload.append('ext', ext);
+      }
+    }
+
+    const tagsCsv = rawFormData.tags
+      .map((tag) => tag.toString().trim())
+      .filter(Boolean)
+      .join(',');
+
+    if (tagsCsv.length > 0) {
+      payload.append('tags', tagsCsv);
+    }
+
+    await sendToServer(payload);
   }
 
   return (
@@ -82,18 +110,6 @@ export default async function AddPhoto() {
               name="photographer"
               placeholder="Photographer Name"
               className="block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900/20"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="dateTaken" className="block text-sm font-medium text-zinc-700">
-              Date Taken
-            </label>
-            <input
-              type="date"
-              id="dateTaken"
-              name="dateTaken"
-              className="block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-zinc-900 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900/20"
             />
           </div>
 

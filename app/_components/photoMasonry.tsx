@@ -1,9 +1,9 @@
 "use client"
 
 import useMasonry from "@/app/_components/useMasonry";
-import { Photo } from "@/lib/types";
+import { Photo } from "@/types/index";
 
-export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], onPhotoClick: (id: number) => void}) {
+export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], onPhotoClick: (id: string) => void}) {
   const masonryContainer = useMasonry();
 
   return (
@@ -14,7 +14,7 @@ export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], o
         {photos && photos.length > 0 ? (
             photos.map((photo: Photo) => (
                 <div key={photo.id} className="bg-gray-100 p-4 rounded-lg cursor-pointer hover:shadow-lg transition-shadow" onClick={() => onPhotoClick(photo.id)}>
-                    <h2 className="text-md font-bold">{photo.description}</h2>
+                    <h2 className="text-md font-bold">{photo.title}</h2>
                     <img src={photo.url} alt={photo.description} className="w-full mt-4 rounded-lg" />
                 </div>
             ))

@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { Map } from "@/lib/types";
 import { getPossibleTags } from "@/lib/data";
 
@@ -7,11 +6,7 @@ export default async function AddMap() {
   
   async function submitNewMap(formData:FormData) {
     'use server'
-    const session = await auth()
-    if (!session?.user) {
-      throw new Error('Unauthorized')
-    }
- 
+
     const rawFormData = {
       newMap: formData.get('newMap'),
       description: formData.get('description'),

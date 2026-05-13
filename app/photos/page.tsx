@@ -43,7 +43,7 @@ function PhotosContent() {
     useEffect(() => {
         const loadSelectedPhoto = async () => {
             if (photoId) {
-                const photo = await getPhotoById(Number(photoId));
+                const photo = await getPhotoById(photoId);
                 setSelectedPhoto(photo || null);
             } else {
                 setSelectedPhoto(null);
