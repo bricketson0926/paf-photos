@@ -2,7 +2,7 @@
 
 import TagBar from "@/app/_components/tagBar";
 import { getPhotos, getPhotoById } from "@/lib/data";
-import { Photo } from "@/lib/types";
+import { Photo } from "@/types/index";
 import PhotoMasonry from "@/app/_components/photoMasonry"
 import PhotoModal from "@/app/_components/photoModal"
 import { useSearchParams, useRouter } from "next/navigation";
