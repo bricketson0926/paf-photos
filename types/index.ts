@@ -1,8 +1,9 @@
 export type AudioClip = {
-    key: string;
+    id: string;
     title: string;
     duration: number;
-    url: string;
+    createdAt: string;
+    ext: string;
 };
 
 export type Photo = {
