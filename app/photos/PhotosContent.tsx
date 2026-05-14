@@ -64,7 +64,6 @@ export default function PhotosContent({ cloudfrontUrl }: PhotosContentProps) {
                 setLoading(false);
             }
         };
-        console.log("Loading photos with tags:", searchParams.getAll('tags'), "and tag mode:", searchParams.get('tagMode'));;
         loadPhotos();
     }, [searchParams, cloudfrontUrl]);
 
