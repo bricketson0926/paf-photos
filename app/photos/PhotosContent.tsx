@@ -55,7 +55,6 @@ export default function PhotosContent({ cloudfrontUrl }: PhotosContentProps) {
                             return tags.every(tag => photo.tags.includes(tag));
                         }
                     });
-                    console.log("Filtered photos based on tags:", filteredPhotos);
                 setPhotos(filteredPhotos);
             } catch (error) {
                 console.error("Error loading photos:", error);
@@ -78,7 +77,14 @@ export default function PhotosContent({ cloudfrontUrl }: PhotosContentProps) {
                     }
                     const allPhotos = await response.json();
                     const photo = allPhotos.find((p: Photo) => p.id.toString() === photoId);
-                    setSelectedPhoto(photo || null);
+                    if (photo) {
+                        setSelectedPhoto({
+                            ...photo,
+                            url: cloudfrontUrl + photo.id + "." + photo.ext,
+                        });
+                    } else {
+                        setSelectedPhoto(null);
+                    }
                 } catch (error) {
                     console.error("Error loading selected photo:", error);
                     setSelectedPhoto(null);
