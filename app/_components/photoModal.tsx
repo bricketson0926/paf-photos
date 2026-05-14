@@ -1,6 +1,6 @@
 'use client';
 
-import { Photo } from "@/lib/types";
+import { Photo } from "@/types/index";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -61,18 +61,14 @@ export default function PhotoModal({ photo, onClose }: { photo: Photo | null; on
                                 <p className="text-lg text-gray-600">{photo.description}</p>
                             </div>
 
-                            <div className="border-t border-gray-200 pt-6">
+                            {/* <div className="border-t border-gray-200 pt-6">
                                 <div className="space-y-4">
                                     <div>
                                         <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Photographer</p>
                                         <p className="text-lg text-gray-900">{photo.photographer}</p>
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Date Taken</p>
-                                        <p className="text-lg text-gray-900">{photo.dateTaken}</p>
-                                    </div>
                                 </div>
-                            </div>
+                            </div> */}
 
                             {photo.tags && photo.tags.length > 0 && (
                                 <div className="border-t border-gray-200 pt-6">

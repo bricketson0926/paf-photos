@@ -11,8 +11,8 @@ export type Photo = {
     ext: string; // file extension
     title: string;
     description: string;
-    dateTaken: string; // ISO date string
     tags: string[];
+    url: string; // not stored in the database, but constructed from the ID and extension and stored in the same type for convenience
 }
 
 export type Map = {

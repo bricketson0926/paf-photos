@@ -1,5 +1,3 @@
-'use cache';
-
 export async function sendToServer(data: FormData): Promise<boolean> {
     // push the meta data and the image url to the database and return as JSON.
     // they're of type multipart/form-data with file, title, tags, description, and ext fields.

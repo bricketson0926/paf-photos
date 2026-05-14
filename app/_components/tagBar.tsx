@@ -1,10 +1,12 @@
 'use client';
-import { get } from "http";
-import {usePathname, useSearchParams, useRouter} from "next/navigation";
-import { getPossibleTags } from "@/lib/data";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
-export default function TagBar() {
+type TagBarProps = {
+  cloudfrontUrl: string;
+};
+
+export default function TagBar({ cloudfrontUrl }: TagBarProps) {
     // this component is used to search for a term
     const searchParams = useSearchParams() // get the search params
     const pathname = usePathname(); // get the pathname
@@ -14,11 +16,23 @@ export default function TagBar() {
 
     useEffect(() => {
         const loadTags = async () => {
-            const tags = await getPossibleTags();
-            setPossibleTags(tags);
+            try {
+                const url = cloudfrontUrl + "photo-metadata.json";
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch tags: ${response.status}`);
+                }
+                const photos = await response.json();
+                const allTags = photos.flatMap((photo: any) => photo.tags);
+                const uniqueTags = Array.from(new Set<string>(allTags as string[]));
+                setPossibleTags(uniqueTags);
+            } catch (error) {
+                console.error("Error loading tags:", error);
+                setPossibleTags([]);
+            }
         };
         loadTags();
-    }, []);
+    }, [cloudfrontUrl]);
 
     function handleSort(tag: string) {
         // this function handles the sort
