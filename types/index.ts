@@ -4,6 +4,7 @@ export type AudioClip = {
     duration: number;
     createdAt: string;
     ext: string;
+    url?: string;
 };
 
 export type Photo = {
