@@ -41,9 +41,15 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
       payload.append("description", description.trim().replace(/^b(["'])(.*)\1$/, "$2"));
     }
 
-    const photographer = formData.get("photographer");
-    if (typeof photographer === "string") {
-      payload.append("photographer", photographer.trim());
+    const yearCreated = formData.get("yearCreated");
+    if (typeof yearCreated === "string") {
+      const normalizedYear = yearCreated.trim();
+      if (normalizedYear.length > 0) {
+        payload.append("taken", normalizedYear);
+      }
+      if (normalizedYear.length === 0) {
+        payload.append("taken", ""); // Ensure the field is sent even if empty
+      }
     }
 
     const ext = newPhoto.name.split(".").pop()?.trim();
@@ -59,6 +65,9 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
 
     if (tagsCsv.length > 0) {
       payload.append("tags", tagsCsv);
+    }
+    if (tagsCsv.length === 0) {
+      payload.append("tags", ""); // Ensure the field is sent even if empty
     }
 
     setIsSubmitting(true);
@@ -127,14 +136,16 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="photographer" className="block text-sm font-medium text-zinc-700">
-              Photographer
+            <label htmlFor="yearCreated" className="block text-sm font-medium text-zinc-700">
+              Year Created (optional)
             </label>
             <input
               type="text"
-              id="photographer"
-              name="photographer"
-              placeholder="Photographer Name"
+              inputMode="numeric"
+              pattern="[0-9]{4}"
+              id="yearCreated"
+              name="yearCreated"
+              placeholder="YYYY"
               className="block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900/20"
             />
           </div>
@@ -163,7 +174,7 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
             {isSubmitting ? "Submitting..." : "Submit New Photo"}
           </button>
 
-          {status ? <p className="text-sm text-zinc-700">{status}</p> : null}
+          {status ? <p className="text-sm text-red-700">{status}</p> : null}
         </form>
       </main>
     </div>

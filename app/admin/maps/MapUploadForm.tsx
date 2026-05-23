@@ -45,9 +45,12 @@ export default function MapUploadForm({ apiUrl }: MapUploadFormProps) {
       payload.append("creator", creator.trim());
     }
 
-    const dateCreated = formData.get("dateCreated");
-    if (typeof dateCreated === "string") {
-      payload.append("dateCreated", dateCreated);
+    const yearCreated = formData.get("yearCreated");
+    if (typeof yearCreated === "string") {
+      const normalizedYear = yearCreated.trim();
+      if (normalizedYear.length > 0) {
+        payload.append("dateCreated", normalizedYear);
+      }
     }
 
     const ext = newMap.name.split(".").pop()?.trim();
@@ -134,13 +137,16 @@ export default function MapUploadForm({ apiUrl }: MapUploadFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="dateCreated" className="block text-sm font-medium text-zinc-700">
-              Date Created
+            <label htmlFor="yearCreated" className="block text-sm font-medium text-zinc-700">
+              Year Created
             </label>
             <input
-              type="date"
-              id="dateCreated"
-              name="dateCreated"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]{4}"
+              id="yearCreated"
+              name="yearCreated"
+              placeholder="YYYY"
               className="block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-zinc-900 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900/20"
             />
           </div>

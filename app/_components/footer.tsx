@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="border-t border-gray-200 bg-white/95 backdrop-blur bottom-0 w-full fixed">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center px-4 py-1">
         <p className="text-center text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} Piercing Arrow & Frontier Media Database. All rights reserved.
+          Piercing Arrow & Frontier Media Database. All rights reserved.
         </p>
       </div>
       <RepeatingColorBanner repeats={5} />

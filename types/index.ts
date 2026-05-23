@@ -13,6 +13,7 @@ export type Photo = {
     title: string;
     description: string;
     tags: string[];
+    taken?: string; // Four-digit year, optional when unknown
     url: string; // not stored in the database, but constructed from the ID and extension and stored in the same type for convenience
 }
 
@@ -21,5 +22,5 @@ export type Map = {
     title: string;
     description: string;
     creator: string; // Won't be shown for maps, but good to have for data consistency
-    dateCreated: string; // ISO date string
+    dateCreated?: string; // Four-digit year, optional when unknown
 }

@@ -9,13 +9,13 @@ export default function AdminNavbar() {
 
                 <nav className="flex flex-wrap items-center justify-center gap-3 pb-2">
                 <Link
-                    href="/admin/photos"
+                    href="/admin/photos/add"
                     className="rounded-xl bg-gray-200 px-3 py-1 text-sm font-medium transition hover:bg-gray-300"
                 >
                     Add Photo
                 </Link>
                 <Link
-                    href="/admin/maps"
+                    href="/admin/maps/add"
                     className="rounded-xl bg-gray-200 px-3 py-1 text-sm font-medium transition hover:bg-gray-300"
                 >
                     Add Maps

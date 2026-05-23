@@ -3,7 +3,7 @@
 import { Photo } from "@/types/index";
 import { useEffect } from "react";
 
-export default function PhotoModal({ photo, onClose }: { photo: Photo | null; onClose: () => void }) {
+export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null; onClose: () => void }) {
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -56,14 +56,6 @@ export default function PhotoModal({ photo, onClose }: { photo: Photo | null; on
                             <div>
                                 <h1 className="text-4xl font-bold text-gray-900 mb-2">{photo.title}</h1>
                                 <p className="text-lg text-gray-600">{photo.description}</p>
-                            </div>
-                            <div>
-                                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Taken:</p>
-                                {photo.taken ? (
-                                    <p className="text-lg text-gray-600">{photo.taken}</p>
-                                ) : (
-                                    <p className="text-lg text-gray-600 italic">Unknown</p>
-                                )}
                             </div>
 
                             {photo.tags && photo.tags.length > 0 && (

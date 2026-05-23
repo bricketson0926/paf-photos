@@ -28,7 +28,6 @@ async function asyncToGetData() : Promise<Photo[]> {
         photo.description = photo.description || ""; // Ensure description is a string
         photo.ext = photo.ext || ""; // Ensure extension is a string
         photo.title = photo.title || ""; // Ensure title is a string
-        // photo.photographer = photo.photographer || "Unknown"; // Ensure photographer is a string
         photo.url = process.env.CLOUDFRONT_URL + photo.id + "." + photo.ext; // Generate the full image URL
     });
     return data;
@@ -62,7 +61,6 @@ export async function getPhotos(tags: string[] = [], anyTags: boolean = false): 
         url: photo.url,
         tags: photo.tags,
         description: photo.description,
-        // photographer: photo.photographer,
         ext: photo.ext
     }));
 }

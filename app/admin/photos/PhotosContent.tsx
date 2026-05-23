@@ -3,7 +3,7 @@
 import TagBar from "@/app/_components/tagBar";
 import { Photo } from "@/types/index";
 import PhotoMasonry from "@/app/_components/photoMasonry"
-import PhotoModal from "@/app/_components/photoModal"
+import PhotoEditModal from "@/app/_components/photoEditModal";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -120,7 +120,7 @@ export default function PhotosContent({ cloudfrontUrl }: PhotosContentProps) {
                 {photos.length} photo{photos.length !== 1 && 's'} match{photos.length === 1 && 'es'} your criteria.
             </p>
             <PhotoMasonry photos={photos as Photo[]} onPhotoClick={handlePhotoClick} />
-            <PhotoModal photo={selectedPhoto} onClose={handleCloseModal} />
+            <PhotoEditModal photo={selectedPhoto} onClose={handleCloseModal} />
         </>
     );
 }
