@@ -2,6 +2,7 @@
 
 import { Photo } from "@/types/index";
 import { useEffect } from "react";
+import { deletePhoto } from "@/lib/actions";
 
 export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null; onClose: () => void }) {
     useEffect(() => {
@@ -14,6 +15,22 @@ export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null
         window.addEventListener('keydown', handleEscape);
         return () => window.removeEventListener('keydown', handleEscape);
     }, [onClose]);
+
+    // delete photo
+    const handleDelete = async () => {
+        if (!photo) return;
+
+        if (confirm("Are you sure you want to delete this photo? This action cannot be undone.")) {
+            try {
+                await deletePhoto(photo.id);
+                alert("Photo deleted successfully.");
+                onClose();
+            } catch (error) {
+                console.error("Error deleting photo:", error);
+                alert("Failed to delete photo. Please try again.");
+            }
+        }
+    };
 
     if (!photo) return null;
 
@@ -50,29 +67,37 @@ export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null
                                 className="w-full h-auto max-h-[calc(95vh-200px)] object-contain rounded-lg"
                             />
                         </div>
-
-                        {/* Details */}
-                        <div className="flex-1 flex flex-col gap-6 md:py-4">
-                            <div>
-                                <h1 className="text-4xl font-bold text-gray-900 mb-2">{photo.title}</h1>
-                                <p className="text-lg text-gray-600">{photo.description}</p>
-                            </div>
-
-                            {photo.tags && photo.tags.length > 0 && (
-                                <div className="border-t border-gray-200 pt-6">
-                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Tags</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {photo.tags.map((tag, index) => (
-                                            <span
-                                                key={index}
-                                                className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium"
-                                            >
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
+                        {/* Vertical Flex Box */}
+                        <div className="flex-1 flex flex-col gap-8">
+                            {/* Details */}
+                            <div className="flex-1 flex flex-col gap-6 md:py-4">
+                                <div>
+                                    <h1 className="text-4xl font-bold text-gray-900 mb-2">{photo.title}</h1>
+                                    <p className="text-lg text-gray-600">{photo.description}</p>
                                 </div>
-                            )}
+
+                                {photo.tags && photo.tags.length > 0 && (
+                                    <div className="border-t border-gray-200 pt-6">
+                                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Tags</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {photo.tags.map((tag, index) => (
+                                                <span
+                                                    key={index}
+                                                    className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium"
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            {/* Admin Actions */}
+                            <div className="flex flex-row gap-4 md:py-4">
+                                <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition-colors" onClick={handleDelete}>
+                                    Delete Photo
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

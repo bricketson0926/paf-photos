@@ -10,12 +10,14 @@ type PhotoUploadFormProps = {
 export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFormProps) {
   const [status, setStatus] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSuccessStatus = status.toLowerCase().includes("success");
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("");
+    const form = event.currentTarget;
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
     const newPhoto = formData.get("newPhoto");
 
     if (!(newPhoto instanceof File) || newPhoto.size === 0) {
@@ -83,7 +85,7 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
         throw new Error(`Upload failed: ${response.status} ${response.statusText}${text ? ` - ${text.slice(0, 200)}` : ""}`);
       }
 
-      event.currentTarget.reset();
+      form.reset();
       setStatus("Photo uploaded successfully.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Upload failed.");
@@ -174,7 +176,7 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
             {isSubmitting ? "Submitting..." : "Submit New Photo"}
           </button>
 
-          {status ? <p className="text-sm text-red-700">{status}</p> : null}
+          {status ? <p className={`text-sm ${isSuccessStatus ? "text-green-700" : "text-red-700"}`}>{status}</p> : null}
         </form>
       </main>
     </div>

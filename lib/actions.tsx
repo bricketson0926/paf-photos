@@ -1,7 +1,7 @@
 export async function sendToServer(data: FormData): Promise<boolean> {
     // push the meta data and the image url to the database and return as JSON.
     // they're of type multipart/form-data with file, title, tags, description, taken, and ext fields.
-    const url = process.env.API_URL + "addPhoto";
+    const url = process.env.NEXT_PUBLIC_API_URL + "addPhoto";
     // console.log("Sending to URL:", url);
     const response = await fetch(url, {
         method: 'POST',
@@ -18,13 +18,10 @@ export async function sendToServer(data: FormData): Promise<boolean> {
 }
 
 export async function deletePhoto(photoId: string): Promise<boolean> {
-    const url = process.env.API_URL + "deletePhoto";
-    // console.log("Sending delete request to URL:", url, "for photo ID:", photoId);
+    const url = process.env.NEXT_PUBLIC_API_URL + "deletePhoto";
+    console.log("Sending delete request to URL:", url, "for photo ID:", photoId);
     const response = await fetch(url, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
         body: JSON.stringify({ id: photoId })
     });
     
@@ -39,7 +36,7 @@ export async function deletePhoto(photoId: string): Promise<boolean> {
 
 export async function updatePhoto(photoId: string, data: FormData): Promise<boolean> {
     // only allows the update of title, description, tags, and taken. Not the file itself.
-    const url = process.env.API_URL + "updatePhoto";
+    const url = process.env.NEXT_PUBLIC_API_URL + "updatePhoto";
     // console.log("Sending update request to URL:", url, "for photo ID:", photoId);
     const payload = new FormData();
     payload.append("id", photoId);

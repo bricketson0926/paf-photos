@@ -82,6 +82,7 @@ export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], o
                 type="button"
                 onClick={onClick}
                 className="group relative block w-full overflow-hidden rounded-2xl bg-zinc-100 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/15"
+                key={(photo as AlbumPhoto & { id: string }).id}
               >
                 <img
                   src={(photo as AlbumPhoto & { src: string }).src}

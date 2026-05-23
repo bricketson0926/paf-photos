@@ -2,7 +2,7 @@ import Link from "next/link";
 export default function AdminNavbar() {
     return (
         <div className="sticky top-32 z-40">
-            <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-3">
+            <div className="mx-auto flex max-w-2xs flex-col items-center px-4 py mb-1 bg-gray-100 rounded-xl border border-gray-200 ">
                 <h1 className="py-2 text-center text-3xl font-bold">
                 Add New Media
                 </h1>

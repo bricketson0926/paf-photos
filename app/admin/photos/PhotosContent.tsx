@@ -106,7 +106,7 @@ export default function PhotosContent({ cloudfrontUrl }: PhotosContentProps) {
     const handleCloseModal = () => {
         const params = new URLSearchParams(searchParams);
         params.delete('photoId');
-        router.push(params.toString() ? `?${params.toString()}` : '/photos', { scroll: false });
+        router.push(params.toString() ? `?${params.toString()}` : '/admin/photos', { scroll: false });
     };
 
     if (loading) {

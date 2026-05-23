@@ -13,8 +13,9 @@ export default function MapUploadForm({ apiUrl }: MapUploadFormProps) {
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("");
+    const form = event.currentTarget;
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
     const newMap = formData.get("newMap");
 
     if (!(newMap instanceof File) || newMap.size === 0) {
@@ -71,7 +72,7 @@ export default function MapUploadForm({ apiUrl }: MapUploadFormProps) {
         throw new Error(`Upload failed: ${response.status} ${response.statusText}${text ? ` - ${text.slice(0, 200)}` : ""}`);
       }
 
-      event.currentTarget.reset();
+      form.reset();
       setStatus("Map uploaded successfully.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Upload failed.");
