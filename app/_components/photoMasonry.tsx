@@ -1,7 +1,7 @@
 "use client"
 
-import { RowsPhotoAlbum, type Photo as AlbumPhoto } from "react-photo-album";
-import "react-photo-album/rows.css";
+import { ColumnsPhotoAlbum, type Photo as AlbumPhoto } from "react-photo-album";
+import "react-photo-album/columns.css";
 import { Photo } from "@/types/index";
 import { useEffect, useState } from "react";
 
@@ -59,15 +59,14 @@ export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], o
   return (
     <div className="w-full">
       {albumPhotos.length > 0 ? (
-        <RowsPhotoAlbum
+        <ColumnsPhotoAlbum
           photos={albumPhotos}
-          targetRowHeight={(containerWidth) => {
-            if (!containerWidth) return 180;
-            if (containerWidth < 640) return 160;
-            if (containerWidth < 1024) return 170;
-            return 180;
+          columns={(containerWidth) => {
+            if (!containerWidth) return 2;
+            if (containerWidth < 640) return 2;
+            if (containerWidth < 1024) return 3;
+            return 4;
           }}
-          rowConstraints={{ minPhotos: 1, maxPhotos: 7, singleRowMaxHeight: 220 }}
           spacing={(containerWidth) => {
             if (!containerWidth) return 10;
             if (containerWidth < 640) return 8;
