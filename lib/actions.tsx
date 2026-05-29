@@ -38,6 +38,29 @@ export async function updatePhoto(photoId: string, data: FormData): Promise<bool
     // only allows the update of title, description, and tags. Not the file itself.
     const url = process.env.NEXT_PUBLIC_API_URL + "updatePhoto";
     // console.log("Sending update request to URL:", url, "for photo ID:", photoId);
+
+    // Clean the data... Null is ''
+
+    const title = data.get("title");
+    if (typeof title === "string") {
+        data.set("title", title.trim());
+    }
+
+    const description = data.get("description");
+    if (typeof description === "string") {
+        data.set("description", description.trim().replace(/^b(["'])(.*)\1$/, "$2"));
+    }
+
+    const tags = data.getAll("tags").map(tag => tag.toString().trim()).filter(Boolean).join(",");
+    data.set("tags", tags);
+    
+    const yearTaken = data.get("taken");
+    if (typeof yearTaken === "string") {
+        const normalizedYearTaken = yearTaken.trim();
+        data.set("taken", normalizedYearTaken);
+    }
+
+
     const payload = {
         id: photoId,
         title: data.get("title"),
