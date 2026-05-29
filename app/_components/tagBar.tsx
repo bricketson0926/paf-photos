@@ -25,8 +25,8 @@ export default function TagBar({ cloudfrontUrl }: TagBarProps) {
                 const photos = await response.json();
                 const allTags = photos.flatMap((photo: any) => photo.tags ?? []);
                 // filter out null/undefined/non-string/empty tags
-                const stringTags = (allTags as any[]).filter((t): t is string => typeof t === 'string' && t !== null && t !== undefined && t !== '');
-                const uniqueTags = Array.from(new Set<string>(stringTags));
+                const stringTags = (allTags as any[]).filter((t): t is string => typeof t === 'string' && t.trim() !== '');
+                const uniqueTags = Array.from(new Set<string>(stringTags)).sort();
                 setPossibleTags(uniqueTags);
             } catch (error) {
                 console.error("Error loading tags:", error);
