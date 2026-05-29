@@ -61,17 +61,17 @@ export async function updatePhoto(photoId: string, data: FormData): Promise<bool
         payload.append("tags", tagsCsv);
     }
 
-    // const taken = data.get("taken");
-    // if (typeof taken === "string") {
-    //     const normalizedTaken = taken.trim();
-    //     if (normalizedTaken.length > 0) {
-    //         payload.append("taken", normalizedTaken);
-    //     }
-    // }
+    const yearTaken = data.get("yearTaken");
+    if (typeof yearTaken === "string") {
+        const normalizedYearTaken = yearTaken.trim();
+        if (normalizedYearTaken.length > 0) {
+            payload.append("yearTaken", normalizedYearTaken);
+        }
+    }
 
     const response = await fetch(url, {
         method: 'PATCH',
-        body: payload
+        body: payload.toString() === "id=" ? JSON.stringify({ id: photoId, title: data.get("title"), description: data.get("description"), tags: tagsCsv }) : payload
     });
     
     if (!response.ok) {

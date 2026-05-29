@@ -13,7 +13,7 @@ export type Photo = {
     title: string;
     description: string;
     tags: string[];
-    taken?: string; // Four-digit year, optional when unknown
+    yearTaken?: string; // Four-digit year, optional when unknown
     url: string; // not stored in the database, but constructed from the ID and extension and stored in the same type for convenience
 }
 

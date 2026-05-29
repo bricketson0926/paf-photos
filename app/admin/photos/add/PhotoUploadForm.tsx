@@ -43,14 +43,14 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
       payload.append("description", description.trim().replace(/^b(["'])(.*)\1$/, "$2"));
     }
 
-    const yearCreated = formData.get("yearCreated");
-    if (typeof yearCreated === "string") {
-      const normalizedYear = yearCreated.trim();
-      if (normalizedYear.length > 0) {
-        payload.append("taken", normalizedYear);
+    const yearTaken = formData.get("yearTaken");
+    if (typeof yearTaken === "string") {
+      const normalizedYearTaken = yearTaken.trim();
+      if (normalizedYearTaken.length > 0) {
+        payload.append("yearTaken", normalizedYearTaken);
       }
-      if (normalizedYear.length === 0) {
-        payload.append("taken", ""); // Ensure the field is sent even if empty
+      if (normalizedYearTaken.length === 0) {
+        payload.append("yearTaken", ""); // Ensure the field is sent even if empty
       }
     }
 
@@ -138,15 +138,15 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="yearCreated" className="block text-sm font-medium text-zinc-700">
-              Year Created (optional)
+            <label htmlFor="yearTaken" className="block text-sm font-medium text-zinc-700">
+              Year Taken (optional)
             </label>
             <input
               type="text"
               inputMode="numeric"
               pattern="[0-9]{4}"
-              id="yearCreated"
-              name="yearCreated"
+              id="yearTaken"
+              name="yearTaken"
               placeholder="YYYY"
               className="block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900/20"
             />

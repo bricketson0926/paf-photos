@@ -105,12 +105,10 @@ export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null
                                     />
                                 </div>
 
-                                { /*
                                 <div className="border-t border-gray-200 pt-6">
-                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Taken</p>
-                                    <input name="taken" type="text" defaultValue={photo.taken} className="w-full text-gray-600 border-2 focus:ring-0 rounded border-gray-300" placeholder="Date taken" />
+                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Year Taken</p>
+                                    <input name="yearTaken" type="text" defaultValue={photo.yearTaken} className="w-full text-gray-600 border-2 focus:ring-0 rounded border-gray-300" placeholder="Year taken" />
                                 </div>
-                                */ }
                             </div>
                             {/* Admin Actions */}
                             <div className="flex flex-row gap-4 md:py-4">
