@@ -70,7 +70,7 @@ export async function updatePhoto(photoId: string, data: FormData): Promise<bool
     }
 
     const response = await fetch(url, {
-        method: 'PATCH',
+        method: 'POST',
         body: payload.toString() === "id=" ? JSON.stringify({ id: photoId, title: data.get("title"), description: data.get("description"), tags: tagsCsv }) : payload
     });
     
