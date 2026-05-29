@@ -1,8 +1,8 @@
 'use client';
 
 import { Photo } from "@/types/index";
+import { deletePhoto, updatePhoto } from "@/lib/actions";
 import { useEffect } from "react";
-import { deletePhoto } from "@/lib/actions";
 
 export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null; onClose: () => void }) {
     useEffect(() => {
@@ -32,7 +32,24 @@ export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null
         }
     };
 
+    const onSave = async (event: React.SubmitEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (!photo) return;
+
+        if (confirm("Save changes to this photo?")) {
+            try {
+                await updatePhoto(photo.id, new FormData(event.currentTarget));
+                alert("Photo updated successfully.");
+                onClose();
+            } catch (error) {
+            console.error("Error saving photo changes:", error);
+                alert("Failed to save changes. Please try again.");
+            }
+        }
+    };
+
     if (!photo) return null;
+
 
     return (
         <>
@@ -58,7 +75,7 @@ export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 flex flex-col md:flex-row gap-8 p-8 overflow-auto">
+                    <form className="flex-1 flex flex-col md:flex-row gap-8 p-8 overflow-auto" onSubmit={onSave}>
                         {/* Image */}
                         <div className="flex items-center justify-center md:flex-1 md:min-w-0">
                             <img
@@ -72,34 +89,34 @@ export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null
                             {/* Details */}
                             <div className="flex-1 flex flex-col gap-6 md:py-4">
                                 <div>
-                                    <h1 className="text-4xl font-bold text-gray-900 mb-2">{photo.title}</h1>
-                                    <p className="text-lg text-gray-600">{photo.description}</p>
+                                    <label className="block text-sm font-medium text-gray-500 mb-1">Photo Title</label>
+                                    <input name="title" type="text" defaultValue={photo.title} className="w-full text-4xl font-bold text-gray-900 mb-2 focus:ring-0 border-2 rounded border-gray-300" />
+                                    <label className="block text-sm font-medium text-gray-500 mb-1">Description</label>
+                                    <textarea name="description" defaultValue={photo.description} className="w-full text-lg text-gray-600 focus:ring-0 resize-none h-32 border-2 rounded border-gray-300" />
+                                </div>
+                                <div className="border-t border-gray-200 pt-6">
+                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Tags</p>
+                                    <input name="tags" type="text" defaultValue={photo.tags.toString()} className="w-full text-gray-600 border-2 focus:ring-0 rounded border-gray-300" placeholder="Comma-separated tags" />
                                 </div>
 
-                                {photo.tags && photo.tags.length > 0 && (
-                                    <div className="border-t border-gray-200 pt-6">
-                                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Tags</p>
-                                        <div className="flex flex-wrap gap-2">
-                                            {photo.tags.map((tag, index) => (
-                                                <span
-                                                    key={index}
-                                                    className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium"
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
+                                { /*
+                                <div className="border-t border-gray-200 pt-6">
+                                    <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Taken</p>
+                                    <input name="taken" type="text" defaultValue={photo.taken} className="w-full text-gray-600 border-2 focus:ring-0 rounded border-gray-300" placeholder="Date taken" />
+                                </div>
+                                */ }
                             </div>
                             {/* Admin Actions */}
                             <div className="flex flex-row gap-4 md:py-4">
-                                <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition-colors" onClick={handleDelete}>
+                                <button type="button" className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition-colors" onClick={handleDelete}>
                                     Delete Photo
+                                </button>
+                                <button type="submit" className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition-colors">
+                                    Save Edits and Close
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </>

@@ -35,7 +35,7 @@ export async function deletePhoto(photoId: string): Promise<boolean> {
 }
 
 export async function updatePhoto(photoId: string, data: FormData): Promise<boolean> {
-    // only allows the update of title, description, tags, and taken. Not the file itself.
+    // only allows the update of title, description, and tags. Not the file itself.
     const url = process.env.NEXT_PUBLIC_API_URL + "updatePhoto";
     // console.log("Sending update request to URL:", url, "for photo ID:", photoId);
     const payload = new FormData();
@@ -61,16 +61,16 @@ export async function updatePhoto(photoId: string, data: FormData): Promise<bool
         payload.append("tags", tagsCsv);
     }
 
-    const yearCreated = data.get("yearCreated");
-    if (typeof yearCreated === "string") {
-        const normalizedYear = yearCreated.trim();
-        if (normalizedYear.length > 0) {
-            payload.append("taken", normalizedYear);
-        }
-    }
+    // const taken = data.get("taken");
+    // if (typeof taken === "string") {
+    //     const normalizedTaken = taken.trim();
+    //     if (normalizedTaken.length > 0) {
+    //         payload.append("taken", normalizedTaken);
+    //     }
+    // }
 
     const response = await fetch(url, {
-        method: 'POST',
+        method: 'PATCH',
         body: payload
     });
     

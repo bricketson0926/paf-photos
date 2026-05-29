@@ -7,7 +7,7 @@ export default async function AddPhoto() {
   return (
     <PhotoUploadForm
       possibleTags={possibleTags}
-      apiUrl={process.env.API_URL ?? ""}
+      apiUrl={process.env.NEXT_PUBLIC_API_URL ?? ""}
     />
   );
 }
