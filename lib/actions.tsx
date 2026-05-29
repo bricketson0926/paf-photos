@@ -38,40 +38,16 @@ export async function updatePhoto(photoId: string, data: FormData): Promise<bool
     // only allows the update of title, description, and tags. Not the file itself.
     const url = process.env.NEXT_PUBLIC_API_URL + "updatePhoto";
     // console.log("Sending update request to URL:", url, "for photo ID:", photoId);
-    const payload = new FormData();
-    payload.append("id", photoId);
-    
-    const title = data.get("title");
-    if (typeof title === "string") {
-        payload.append("title", title.trim());
-    }
-
-    const description = data.get("description");
-    if (typeof description === "string") {
-        payload.append("description", description.trim().replace(/^b(["'])(.*)\1$/, "$2"));
-    }
-
-    const tagsCsv = data
-      .getAll("tags")
-      .map((tag) => tag.toString().trim())
-      .filter(Boolean)
-      .join(",");
-
-    if (tagsCsv.length > 0) {
-        payload.append("tags", tagsCsv);
-    }
-
-    const yearTaken = data.get("yearTaken");
-    if (typeof yearTaken === "string") {
-        const normalizedYearTaken = yearTaken.trim();
-        if (normalizedYearTaken.length > 0) {
-            payload.append("yearTaken", normalizedYearTaken);
-        }
-    }
-
+    const payload = {
+        id: photoId,
+        title: data.get("title"),
+        description: data.get("description"),
+        tags: data.getAll("tags").map(tag => tag.toString().trim()).filter(Boolean).join(","),
+        yearTaken: data.get("taken")
+    };
     const response = await fetch(url, {
         method: 'POST',
-        body: payload.toString() === "id=" ? JSON.stringify({ id: photoId, title: data.get("title"), description: data.get("description"), tags: tagsCsv }) : payload
+        body: JSON.stringify(payload)
     });
     
     if (!response.ok) {
