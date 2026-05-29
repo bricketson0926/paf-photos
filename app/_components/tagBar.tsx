@@ -23,8 +23,10 @@ export default function TagBar({ cloudfrontUrl }: TagBarProps) {
                     throw new Error(`Failed to fetch tags: ${response.status}`);
                 }
                 const photos = await response.json();
-                const allTags = photos.flatMap((photo: any) => photo.tags);
-                const uniqueTags = Array.from(new Set<string>(allTags as string[]));
+                const allTags = photos.flatMap((photo: any) => photo.tags ?? []);
+                // filter out null/undefined/non-string/empty tags
+                const stringTags = (allTags as any[]).filter((t): t is string => typeof t === 'string' && t !== null && t !== undefined && t !== '');
+                const uniqueTags = Array.from(new Set<string>(stringTags));
                 setPossibleTags(uniqueTags);
             } catch (error) {
                 console.error("Error loading tags:", error);
@@ -66,7 +68,7 @@ export default function TagBar({ cloudfrontUrl }: TagBarProps) {
             <div className="flex flex-row items-center space-x-2">
                 {possibleTags.map((tag) => {
                     const isActive = searchParams.getAll('tags').includes(tag);
-
+                    
                     return (
                         <button
                             key={tag}
