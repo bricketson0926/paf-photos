@@ -9,7 +9,7 @@ export default function PhotosPage() {
             Filter or Search Photos
         </h1>
 
-        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading photos...</div>}>
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen pb-16">Loading photos...</div>}>
             <PhotosContent cloudfrontUrl={process.env.CLOUDFRONT_URL ?? ""} />
         </Suspense>
 
