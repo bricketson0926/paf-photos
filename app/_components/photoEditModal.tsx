@@ -96,7 +96,13 @@ export default function PhotoEditModal({ photo, onClose }: { photo: Photo | null
                                 </div>
                                 <div className="border-t border-gray-200 pt-6">
                                     <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Tags</p>
-                                    <input name="tags" type="text" defaultValue={photo.tags.toString()} className="w-full text-gray-600 border-2 focus:ring-0 rounded border-gray-300" placeholder="Comma-separated tags" />
+                                    <input
+                                        name="tags"
+                                        type="text"
+                                        defaultValue={Array.isArray(photo.tags) ? photo.tags.join(",") : ""}
+                                        className="w-full text-gray-600 border-2 focus:ring-0 rounded border-gray-300"
+                                        placeholder="Comma-separated tags"
+                                    />
                                 </div>
 
                                 { /*

@@ -91,7 +91,7 @@ export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], o
                   height={height}
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-black/55 via-black/20 to-transparent p-3 sm:p-4">
+                <div className="pointer-events-none absolute inset-x-0 top-0 bg-linear-to-b from-black/55 via-black/20 to-transparent p-3 sm:p-4">
                   <h2 className="truncate text-[13px] font-medium tracking-wide text-white sm:text-sm">
                     {(photo as AlbumPhoto & { title?: string }).title}
                   </h2>
