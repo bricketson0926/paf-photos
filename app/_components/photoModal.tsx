@@ -58,9 +58,9 @@ export default function PhotoModal({ photo, onClose }: { photo: Photo | null; on
                                 <p className="text-lg text-gray-600">{photo.description}</p>
                             </div>
                             <div>
-                                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Taken:</p>
-                                {photo.taken ? (
-                                    <p className="text-lg text-gray-600">{photo.taken}</p>
+                                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Year Taken:</p>
+                                {photo.yearTaken ? (
+                                    <p className="text-lg text-gray-600">{photo.yearTaken}</p>
                                 ) : (
                                     <p className="text-lg text-gray-600 italic">Unknown</p>
                                 )}
