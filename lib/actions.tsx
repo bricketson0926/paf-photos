@@ -54,10 +54,10 @@ export async function updatePhoto(photoId: string, data: FormData): Promise<bool
     const tags = data.getAll("tags").map(tag => tag.toString().trim()).filter(Boolean).join(",");
     data.set("tags", tags);
     
-    const yearTaken = data.get("taken");
+    const yearTaken = data.get("yearTaken") ?? data.get("taken");
     if (typeof yearTaken === "string") {
         const normalizedYearTaken = yearTaken.trim();
-        data.set("taken", normalizedYearTaken);
+        data.set("yearTaken", normalizedYearTaken);
     }
 
 
@@ -66,18 +66,32 @@ export async function updatePhoto(photoId: string, data: FormData): Promise<bool
         title: data.get("title"),
         description: data.get("description"),
         tags: data.getAll("tags").map(tag => tag.toString().trim()).filter(Boolean).join(","),
-        yearTaken: data.get("taken")
+        yearTaken: data.get("yearTaken") ?? data.get("taken")
     };
+
+    let lastResponse: Response | null = null;
+    let lastResponseBody = "";
+
+    // Intentionally omit Content-Type so browser sends a simple request
+    // (text/plain for string body), avoiding CORS preflight rejection.
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify(payload)
     });
-    
-    if (!response.ok) {
-        const text = await response.text();
-        console.error("Response body:", text.substring(0, 200));
-        throw new Error(`Failed to update photo: ${response.status} ${response.statusText} for ID ${photoId} at ${url}`);
+
+    if (response.ok) {
+        return true;
     }
-    
-    return true;
+
+    const text = await response.text();
+    lastResponse = response;
+    lastResponseBody = text.substring(0, 200);
+    console.error("Response body:", lastResponseBody);
+
+    if (response.status === 404) {
+        throw new Error(`Photo with ID ${photoId} not found. Server responded with 404 at ${url}. Response body: ${lastResponseBody}`);
+    }
+
+    throw new Error(`Failed to update photo: ${response.status} ${response.statusText} for ID ${photoId} at ${url}`);
+
 }

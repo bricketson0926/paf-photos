@@ -59,11 +59,15 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
       payload.append("ext", ext);
     }
 
-    const tagsCsv = formData
-      .getAll("tags")
-      .map((tag) => tag.toString().trim())
-      .filter(Boolean)
-      .join(",");
+    // Gather tags from checked checkboxes and the new-tags text input.
+    // The new-tags input may contain comma-separated values, so split those and normalize all tags, removing empties and duplicates.
+    const rawTags = formData.getAll("tags");
+    const splitTags = rawTags.flatMap((t) => {
+      const s = typeof t === "string" ? t : "";
+      return s.split(",").map((x) => x.trim()).filter((x) => x.length > 0);
+    });
+    const uniqueTags = Array.from(new Set(splitTags));
+    const tagsCsv = uniqueTags.join(",");
 
     if (tagsCsv.length > 0) {
       payload.append("tags", tagsCsv);
@@ -153,19 +157,42 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="tags" className="block text-sm font-medium text-zinc-700">
-              Tags
+            <label className="block text-sm font-medium text-zinc-700">
+              Tags (preexisting)
             </label>
-            <div className="flex flex-wrap gap-2">
-              {possibleTags.map((tag) => (
-                <label key={tag} className="cursor-pointer">
-                  <input type="checkbox" name="tags" value={tag} className="peer sr-only" />
-                  <span className="inline-flex items-center rounded-full border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-700 transition-colors hover:border-zinc-900 peer-checked:border-zinc-900 peer-checked:bg-zinc-900 peer-checked:text-white">
-                    {tag}
-                  </span>
-                </label>
-              ))}
-            </div>
+            <p className="text-xs text-zinc-500">Select one or more tags.</p>
+            {possibleTags.length > 0 ? (
+              <div className="max-h-48 overflow-y-auto rounded-lg border border-zinc-300 bg-white p-3">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {possibleTags.map((tag) => (
+                    <label key={tag} className="inline-flex items-center gap-2 text-sm text-zinc-900">
+                      <input
+                        type="checkbox"
+                        name="tags"
+                        value={tag}
+                        className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900/20"
+                      />
+                      <span>{tag}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-zinc-500">No preexisting tags available.</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="newTags" className="block text-sm font-medium text-zinc-700">
+              New Tags (comma separated)
+            </label>
+            <input
+              type="text"
+              id="newTags"
+              name="tags"
+              placeholder="e.g. beach, sunset, family"
+              className="block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900/20"
+            />
           </div>
 
           <button

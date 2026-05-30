@@ -13,6 +13,7 @@ export default function TagBar({ cloudfrontUrl }: TagBarProps) {
     const {replace} = useRouter(); // get the router
     const currentMode = searchParams.get('tagMode') ?? 'any';
     const [possibleTags, setPossibleTags] = useState<string[]>([]);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     useEffect(() => {
         const loadTags = async () => {
@@ -63,7 +64,6 @@ export default function TagBar({ cloudfrontUrl }: TagBarProps) {
     }
 
     return (
-        // return the search bar
         <div className="flex flex-col items-center justify-between p-8">
             <div className="flex flex-row items-center space-x-2">
                 {possibleTags.map((tag) => {
@@ -86,24 +86,16 @@ export default function TagBar({ cloudfrontUrl }: TagBarProps) {
                 })}
                 </div>
                 <div className="mt-4 flex w-full flex-row items-center justify-center gap-2">
-                    <button
-                        type="button"
-                        onClick={() => handleFilterMode('any')}
-                        className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${
-                            currentMode === 'any' ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-                        }`}
-                    >
-                        Contains Any Tag
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => handleFilterMode('all')}
-                        className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${
-                            currentMode === 'all' ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-                        }`}
-                    >
-                        Contains All Tags
-                    </button>
+                    <div className="flex w-full flex-row items-center justify-center gap-2">
+                        <select
+                            value={currentMode}
+                            onChange={(e) => handleFilterMode(e.target.value as 'any' | 'all')}
+                            className="rounded-full border px-3 py-1.5 text-xs transition-colors bg-white border-gray-300 text-gray-700 hover:bg-gray-100"
+                            >
+                            <option value="any" disabled={currentMode === 'any'}>Contains Any Tag</option>
+                            <option value="all" disabled={currentMode === 'all'}>Contains All Tags</option>
+                        </select>
+                    </div>
                 </div>
         </div>
     );
