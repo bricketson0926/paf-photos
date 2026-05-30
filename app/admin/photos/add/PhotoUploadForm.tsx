@@ -32,6 +32,7 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
 
     const payload = new FormData();
     payload.append("file", newPhoto);
+    payload.append("newPhoto", newPhoto);
 
     const title = formData.get("title");
     if (typeof title === "string") {
@@ -48,9 +49,6 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
       const normalizedYearTaken = yearTaken.trim();
       if (normalizedYearTaken.length > 0) {
         payload.append("yearTaken", normalizedYearTaken);
-      }
-      if (normalizedYearTaken.length === 0) {
-        payload.append("yearTaken", ""); // Ensure the field is sent even if empty
       }
     }
 
@@ -69,14 +67,18 @@ export default function PhotoUploadForm({ possibleTags, apiUrl }: PhotoUploadFor
     const uniqueTags = Array.from(new Set(splitTags));
     const tagsCsv = uniqueTags.join(",");
 
-    if (tagsCsv.length > 0) {
-      payload.append("tags", tagsCsv);
-    }
-    if (tagsCsv.length === 0) {
-      payload.append("tags", ""); // Ensure the field is sent even if empty
-    }
+    payload.append("tags", tagsCsv);
 
     setIsSubmitting(true);
+
+    console.log("Submitting photo with payload:");
+    payload.forEach((value, key) => {
+      if (value instanceof File) {
+        console.log(`- ${key}: [File: ${value.name}, size=${value.size} bytes, type=${value.type}]`);
+      } else {
+        console.log(`- ${key}: ${value}`);
+      }
+    });
 
     try {
       const response = await fetch(new URL("addPhoto", apiUrl).toString(), {

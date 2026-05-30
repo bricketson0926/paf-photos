@@ -65,7 +65,7 @@ export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], o
             if (!containerWidth) return 2;
             if (containerWidth < 640) return 2;
             if (containerWidth < 1024) return 3;
-            return 4;
+            return 5;
           }}
           spacing={(containerWidth) => {
             if (!containerWidth) return 10;
@@ -102,7 +102,7 @@ export default function PhotoMasonry({photos, onPhotoClick}: {photos: Photo[], o
         />
       ) : (
         <p className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 px-4 py-8 text-center text-sm text-zinc-500">
-          No photos found with the specified tags.
+          No photos found with the specified tags
         </p>
       )}
     </div>

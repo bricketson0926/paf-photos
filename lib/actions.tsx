@@ -36,7 +36,7 @@ export async function deletePhoto(photoId: string): Promise<boolean> {
 
 export async function updatePhoto(photoId: string, data: FormData): Promise<boolean> {
     // only allows the update of title, description, and tags. Not the file itself.
-    const url = process.env.NEXT_PUBLIC_API_URL + "updatePhoto";
+    const url = process.env.NEXT_PUBLIC_API_URL + "editPhoto";
     // console.log("Sending update request to URL:", url, "for photo ID:", photoId);
 
     // Clean the data... Null is ''
@@ -61,12 +61,18 @@ export async function updatePhoto(photoId: string, data: FormData): Promise<bool
     }
 
 
+    const toNullIfEmpty = (value: FormDataEntryValue | null): string | null => {
+        if (typeof value !== "string") return null;
+        const normalized = value.trim();
+        return normalized === "" ? null : normalized;
+    };
+
     const payload = {
         id: photoId,
-        title: data.get("title"),
-        description: data.get("description"),
-        tags: data.getAll("tags").map(tag => tag.toString().trim()).filter(Boolean).join(","),
-        yearTaken: data.get("yearTaken") ?? data.get("taken")
+        title: toNullIfEmpty(data.get("title")),
+        description: toNullIfEmpty(data.get("description")),
+        tags: toNullIfEmpty(data.get("tags")),
+        yearTaken: toNullIfEmpty(data.get("yearTaken") ?? data.get("taken"))
     };
 
     let lastResponse: Response | null = null;

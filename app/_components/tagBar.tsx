@@ -64,6 +64,10 @@ export default function TagBar({ cloudfrontUrl }: TagBarProps) {
     }
 
     return (
+        <>
+        <h1 className="font-semibold text-center contents-center text-2xl pt-32">
+                    Filter or Search Photos
+        </h1>
         <div className="flex flex-col items-center justify-between p-8">
             <div className="flex flex-row items-center space-x-2">
                 {possibleTags.map((tag) => {
@@ -97,6 +101,7 @@ export default function TagBar({ cloudfrontUrl }: TagBarProps) {
                         </select>
                     </div>
                 </div>
-        </div>
+            </div>
+        </>
     );
 }

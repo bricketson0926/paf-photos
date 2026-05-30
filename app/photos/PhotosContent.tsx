@@ -114,13 +114,13 @@ export default function PhotosContent({ cloudfrontUrl }: PhotosContentProps) {
     }
 
     return (
-        <>
-            <TagBar cloudfrontUrl={cloudfrontUrl} />
+        <div className="flex flex-col items-center justify-center w-full pb-16">
+            {/* <TagBar cloudfrontUrl={cloudfrontUrl} /> */}
             <p className="pb-2 text-gray-400">
-                {photos.length} photo{photos.length !== 1 && 's'} match{photos.length === 1 && 'es'} your criteria.
+                {photos.length} photo{photos.length !== 1 && 's'} match{photos.length === 1 && 'es'} your criteria
             </p>
             <PhotoMasonry photos={photos as Photo[]} onPhotoClick={handlePhotoClick} />
             <PhotoModal photo={selectedPhoto} onClose={handleCloseModal} />
-        </>
+        </div>
     );
 }
